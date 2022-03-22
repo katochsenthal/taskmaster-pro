@@ -155,7 +155,7 @@ $("#task-form-modal").on("shown.bs.modal", function () {
 });
 
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function () {
+$("#task-form-modal .btn-save").click(function () {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();
@@ -195,15 +195,22 @@ $(".card .list-group").sortable({
   helper: "clone",
   activate: function (event) {
     console.log("activate", this);
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("bottom-trash-drag");
   },
   deactivate: function (event) {
     console.log("deactivate", this);
+    $(this).removeClass("dropover");
+    $(".bottom-trash").removeClass("bottom-trash-drag");
   },
   over: function (event) {
     console.log("over", event.target);
+    $(event.target).addClass("dropover-active");
+    $(".bottom-trash").addClass("bottom-trash-active");
   },
   out: function (event) {
     console.log("out", event.target);
+    $(".bottom-trash").addRemove("bottom-trash-active");
   },
   update: function (event) {
     var tempArr = [];
@@ -248,3 +255,9 @@ $("#trash").droppable({
 $("#modalDueDate").datepicker({
   minDate: 1,
 });
+
+setInterval(function () {
+  $(".card .list-group-item").each(function (index, el) {
+    auditTask(el);
+  });
+}, 1800000);
